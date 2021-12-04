@@ -37,3 +37,22 @@ exports.GETONE = async (MDB_NAME, name_collection, query) => {
     console.log("error", error);
   }
 };
+exports.INSERT_MDB = async(bd, data, name_collection) => {
+  try {
+      const client = await mongoClient.connect(process.env.CONNECT_DB, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+      });
+
+      const db = client.db(bd);
+      const collection = db.collection(name_collection);
+      const { result, insertedId } = await collection.insertOne({
+          ...data
+      });
+      await client.close();
+      console.log("INSERT_MDB", { result, insertedId });
+      return { result, insertedId };
+  } catch (e) {
+      console.log(e);
+  }
+};

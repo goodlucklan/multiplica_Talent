@@ -1,4 +1,4 @@
-const { GETALL, GETONE } = require("./database");
+const { GETALL, GETONE, INSERT_MDB } = require("./database");
 
 exports.Colores = async (req, res) => {
   try {
@@ -20,12 +20,31 @@ exports.UnColor = async (req, res) => {
   try {
     console.log("req", req.params.id);
     const body = {
-      name: req.params.id,
+      id: parseInt(req.params.id),
     };
     const obtenerUnColor = await GETONE("Colors", "AllColors", body);
     res.status(200).json({
       codRes: "00",
       respuesta: obtenerUnColor,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({
+      codRes: "99",
+      mensaje: "No se encontro resultado",
+    });
+  }
+};
+
+exports.InsertColor = async (req, res) => {
+  try {
+    console.log("req", req.body);
+    const insert = req.body;
+    const InsertarColor = await INSERT_MDB("Colors", insert, "AllColors");
+    console.log("INSERT", InsertarColor);
+    res.status(200).json({
+      codRes: "00",
+      respuesta: InsertarColor,
     });
   } catch (error) {
     console.log(error);
