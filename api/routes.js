@@ -54,3 +54,26 @@ exports.InsertColor = async (req, res) => {
     });
   }
 };
+
+exports.Login = async (req, res) => {
+  try {
+    console.log("body_Login", req.body);
+    const user = {
+      user: req.body.user,
+    };
+    const pass = {
+      pass: req.body.pass,
+    };
+    const existeUser = await GETONE("Ecomoda", "User", user);
+    res.status(200).json({
+      codRes: "00",
+      respuesta: existeUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({
+      codRes: "99",
+      mensaje: "No se encontro resultado",
+    });
+  }
+};
